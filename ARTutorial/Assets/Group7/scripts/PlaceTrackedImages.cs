@@ -19,33 +19,56 @@ public class PlaceTrackedImages : MonoBehaviour
     void Awake()
     {
         arTrackedImagesManager = GetComponent<ARTrackedImageManager>();
-        for(int i = 0; i < ArPrefabs.Length; i++)
+        foreach(GameObject prefab in ArPrefabs)
         {
-            prefabDictionary[ArPrefabs[i].name] = ArPrefabs[i];
+            GameObject newPrefab = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+            newPrefab.name = prefab.name;
+            prefabDictionary.Add(newPrefab.name, newPrefab);   
         }
     }
+
     private void OnEnable()
     {
         arTrackedImagesManager.trackedImagesChanged += OnTrackedImagesChanged;
     }
+
     private void OnDisable()
     {
         arTrackedImagesManager.trackedImagesChanged -= OnTrackedImagesChanged;
     }
+
     private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
-        foreach (var trackedImage in eventArgs.updated)
+        foreach(ARTrackedImage trackedImage in eventArgs.added)
         {
-            prefabDictionary[trackedImage.referenceImage.name].SetActive(trackedImage.trackingState == TrackingState.Tracking);
+            UpdateImage(trackedImage);
         }
 
-
-        foreach (var trackedImage in eventArgs.removed)
+        foreach (ARTrackedImage trackedImage in eventArgs.updated)
         {
-            // Destroy its prefab
-            Destroy(prefabDictionary[trackedImage.referenceImage.name]);
-            // Also remove the instance from our array
-            //prefabDictionary.Remove(trackedImage.referenceImage.name);
+            UpdateImage(trackedImage);
+        }
+
+        foreach (ARTrackedImage trackedImage in eventArgs.removed)
+        {
+            UpdateImage(trackedImage);
+        }
+    }
+
+    private void UpdateImage(ARTrackedImage trackedImage)
+    {
+        string name = trackedImage.referenceImage.name;
+        Vector3 position = trackedImage.transform.position;
+        GameObject prefab = prefabDictionary[name];
+        prefab.transform.position = position;
+        prefab.SetActive(true);
+
+        foreach(GameObject go in prefabDictionary.Values)
+        {
+            if(go.name != name)
+            {
+                go.SetActive(false);
+            }
         }
     }
 }
