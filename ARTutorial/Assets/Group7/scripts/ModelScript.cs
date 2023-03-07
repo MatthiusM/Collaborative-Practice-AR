@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ModelScript : MonoBehaviour
 {
-    [SerializeField]
-    Vector3 rotationSpeed;
+
+    private Vector3 rotationSpeed;
 
 
     private void Start()
