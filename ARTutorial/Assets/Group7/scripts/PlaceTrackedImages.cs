@@ -21,9 +21,7 @@ public class PlaceTrackedImages : MonoBehaviour
         arTrackedImagesManager = GetComponent<ARTrackedImageManager>();
         foreach(GameObject prefab in ArPrefabs)
         {
-            GameObject newPrefab = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-            newPrefab.name = prefab.name;
-            prefabDictionary.Add(newPrefab.name, newPrefab);   
+            prefabDictionary.Add(prefab.name, prefab);   
         }
     }
 
@@ -59,15 +57,20 @@ public class PlaceTrackedImages : MonoBehaviour
     {
         string name = trackedImage.referenceImage.name;
         Vector3 position = trackedImage.transform.position;
-        GameObject prefab = prefabDictionary[name];
-        prefab.transform.position = position;
-        prefab.SetActive(true);
+
+
+        GameObject prefab = Instantiate(prefabDictionary[name], position, Quaternion.identity);
+        prefab.name = name;
+        //prefab.SetActive(true);
 
         foreach(GameObject go in prefabDictionary.Values)
         {
             if(go.name != name)
             {
-                go.SetActive(false);
+                if (GameObject.Find(name))
+                {
+                    Destroy(go);
+                }
             }
         }
     }
