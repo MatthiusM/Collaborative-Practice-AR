@@ -14,7 +14,7 @@ public class PlaceTrackedImages : MonoBehaviour
     private GameObject[] ArPrefabs;
 
 
-    private Dictionary<string, GameObject> prefabDictionary = new Dictionary<string, GameObject>();
+    private readonly Dictionary<string, GameObject> prefabDictionary = new Dictionary<string, GameObject>();
 
     void Awake()
     {
