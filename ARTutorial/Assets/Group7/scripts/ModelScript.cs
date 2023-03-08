@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ModelScript : MonoBehaviour
 {
+    [Header("Sound File")]
+    [SerializeField]
+    private AudioClip m_Clip;
 
     private Vector3 rotationSpeed;
 
@@ -22,5 +25,10 @@ public class ModelScript : MonoBehaviour
     int RandomInt(int min, int max)
     {
         return Random.Range(min, max);  
+    }
+
+    public void PlayAudio()
+    {
+        this.GetComponent<AudioSource>().PlayOneShot(m_Clip);
     }
 }
