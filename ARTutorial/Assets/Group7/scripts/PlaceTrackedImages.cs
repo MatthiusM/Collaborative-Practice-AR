@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
 
 
 [RequireComponent(typeof(ARTrackedImageManager))]
@@ -54,18 +55,28 @@ public class PlaceTrackedImages : MonoBehaviour
         }
     }
 
-    private void UpdateImage(ARTrackedImage trackedImage)
-    {
+    private void UpdateImage(ARTrackedImage trackedImage){
+
         string name = trackedImage.referenceImage.name;
         Vector3 position = trackedImage.transform.position;
 
-        prefabDictionary[name].SetActive(true);
-        prefabDictionary[name].transform.position = position;
-        prefabDictionary[name].GetComponent<ModelScript>().PlayAudio();
+        GameObject prefab = prefabDictionary[name];
+        prefab.SetActive(true);
+        prefab.transform.position = position;
 
-        foreach(GameObject go in prefabDictionary.Values)
+        // Play audio when prefab is spawned
+        ModelScript modelScript = prefab.GetComponent<ModelScript>();
+        modelScript.PlayAudio();
+
+        // Stop audio when tracked image is lost
+        if (trackedImage.trackingState == TrackingState.Limited || trackedImage.trackingState == TrackingState.None)
         {
-            if(go.name != name && GameObject.Find(name))
+            modelScript.StopAudio();
+        }
+
+        foreach (GameObject go in prefabDictionary.Values)
+        {
+            if (go.name != name && GameObject.Find(name))
             {
                 prefabDictionary[name].SetActive(false);
             }

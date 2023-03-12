@@ -10,6 +10,28 @@ public class ModelScript : MonoBehaviour
 
     private Vector3 rotationSpeed;
 
+    private AudioSource audioSource;
+
+    void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    public void PlayAudio()
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
+    }
+
+    public void StopAudio()
+    {
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
+    }
 
     private void Start()
     {
@@ -27,8 +49,8 @@ public class ModelScript : MonoBehaviour
         return Random.Range(min, max);  
     }
 
-    public void PlayAudio()
-    {
-        this.GetComponent<AudioSource>().PlayOneShot(m_Clip);
-    }
+    //public void PlayAudio()
+    //{
+    //    this.GetComponent<AudioSource>().PlayOneShot(m_Clip);
+    //}
 }
