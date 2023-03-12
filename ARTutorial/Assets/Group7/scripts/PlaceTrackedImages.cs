@@ -60,12 +60,11 @@ public class PlaceTrackedImages : MonoBehaviour
         string name = trackedImage.referenceImage.name;
         Vector3 position = trackedImage.transform.position;
 
-        GameObject prefab = prefabDictionary[name];
-        prefab.SetActive(true);
-        prefab.transform.position = position;
+        prefabDictionary[name].SetActive(true);
+        prefabDictionary[name].transform.position = position;
 
         // Play audio when prefab is spawned
-        ModelScript modelScript = prefab.GetComponent<ModelScript>();
+        ModelScript modelScript = prefabDictionary[name].GetComponent<ModelScript>();
         modelScript.PlayAudio();
 
         // Stop audio when tracked image is lost
