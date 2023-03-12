@@ -20,7 +20,7 @@ public class PlaceTrackedImages : MonoBehaviour
         arTrackedImagesManager = GetComponent<ARTrackedImageManager>();
         foreach(GameObject prefabData in ArPrefabs)
         {
-            GameObject prefab = Instantiate(prefabData, Vector3.zero, Quaternion.identity);
+            GameObject prefab = Instantiate(prefabData, new Vector3(0, 0, 1), Quaternion.identity);
             prefab.SetActive(false);
             prefab.name = prefabData.name;
             prefabDictionary.Add(prefab.name, prefab);   
@@ -59,19 +59,19 @@ public class PlaceTrackedImages : MonoBehaviour
 
         string name = trackedImage.referenceImage.name;
         Vector3 position = trackedImage.transform.position;
-
+        
         prefabDictionary[name].SetActive(true);
         prefabDictionary[name].transform.position = position;
-
+        arTrackedImagesManager.trackedImagePrefab = prefabDictionary[name];
         // Play audio when prefab is spawned
         ModelScript modelScript = prefabDictionary[name].GetComponent<ModelScript>();
         modelScript.PlayAudio();
 
         // Stop audio when tracked image is lost
-        if (trackedImage.trackingState == TrackingState.Limited || trackedImage.trackingState == TrackingState.None)
-        {
-            modelScript.StopAudio();
-        }
+        //if (trackedImage.trackingState == TrackingState.Limited || trackedImage.trackingState == TrackingState.None)
+        //{
+        //    modelScript.StopAudio();
+        //}
 
         foreach (GameObject go in prefabDictionary.Values)
         {
