@@ -14,7 +14,7 @@ public class ModelScript : MonoBehaviour
 
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioSource = this.GetComponent<AudioSource>();
     }
 
     
@@ -52,7 +52,7 @@ public class ModelScript : MonoBehaviour
     //my audio method is better (Stonk Emoji)
     public void PlayAudio()
     {
-        this.GetComponent<AudioSource>().PlayOneShot(m_Clip);
+        audioSource.PlayOneShot(m_Clip);
     }
 
     //public void PlayAudio()
