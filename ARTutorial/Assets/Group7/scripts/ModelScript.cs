@@ -17,6 +17,44 @@ public class ModelScript : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    
+
+    private void Start()
+    {
+        rotationSpeed = new Vector3(RandomInt(0, 90), RandomInt(0, 90), RandomInt(0, 90));
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //this code only gets compiled if your in the unity editor
+#if UNITY_EDITOR
+        /*
+        run the code in unity editor
+        click one of the prefabs on the left
+        now on the right hand side the inspector you should see an unchecked box
+        check the box to see the prefab on the screen
+        press space to hear the audio from a prefab 
+         */
+        if (Input.GetKey(KeyCode.Space)) 
+        {
+            PlayAudio();
+        }
+#endif
+        transform.Rotate(rotationSpeed * Time.deltaTime);
+    }
+
+    int RandomInt(int min, int max)
+    {
+        return Random.Range(min, max);  
+    }
+
+    //my audio method is better (Stonk Emoji)
+    public void PlayAudio()
+    {
+        this.GetComponent<AudioSource>().PlayOneShot(m_Clip);
+    }
+
     //public void PlayAudio()
     //{
     //    if (!audioSource.isPlaying)
@@ -32,25 +70,4 @@ public class ModelScript : MonoBehaviour
     //        audioSource.Stop();
     //    }
     //}
-
-    private void Start()
-    {
-        rotationSpeed = new Vector3(RandomInt(0, 90), RandomInt(0, 90), RandomInt(0, 90));
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        transform.Rotate(rotationSpeed * Time.deltaTime);
-    }
-
-    int RandomInt(int min, int max)
-    {
-        return Random.Range(min, max);  
-    }
-
-    public void PlayAudio()
-    {
-        this.GetComponent<AudioSource>().PlayOneShot(m_Clip);
-    }
 }
